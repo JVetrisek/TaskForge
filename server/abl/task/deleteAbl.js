@@ -15,6 +15,8 @@ const categorySchema = {
 async function DeleteCategory(req, res){
     try{
         const reqCategory = req.body
+        // Test
+        //const reqCategory = { id: "2d6df09934af1e1c5ca617ab1c70d1cb"};
 
         const valid = ajv.validate(categorySchema, reqCategory);
         if (!valid){

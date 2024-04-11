@@ -1,9 +1,9 @@
 const Ajv = require('ajv')
 const ajv = new Ajv();
 
-const categoryDao = require("../../dao/category-dao.js");
+const tagDao = require("../../dao/tag-dao.js");
 
-const categorySchema = {
+const tagSchema = {
     type: "object",
     properties: {
       id: { type: "string" },
@@ -12,23 +12,23 @@ const categorySchema = {
     additionalProperties: false,
 };
 
-async function DeleteCategory(req, res){
+async function Deletetag(req, res){
     try{
-        const reqCategory = req.body
+        const reqtag = req.body
 
-        const valid = ajv.validate(categorySchema, reqCategory);
+        const valid = ajv.validate(tagSchema, reqtag);
         if (!valid){
             res.status(400).json({
-                reqCategory: "dtoIn is not valid",
+                reqtag: "dtoIn is not valid",
             });
             return;
         }
 
-        categoryDao.remove(reqCategory.id);
+        tagDao.remove(reqtag.id);
         res.json({});
     } catch(e){
         res.status(500).json({message: e.message})
     }
 }
 
-module.exports = DeleteCategory;
+module.exports = Deletetag;

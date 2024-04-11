@@ -13,15 +13,15 @@ app.use(cors());
 const port = 8080;
 
 // Router---------------------------------------------
-//const taskBoardRouter = require("./routes/taskBoard");
+const taskBoardRouter = require("./routes/taskBoard");
 const categoryRouter = require("./routes/category");
 //const taskRouter = require("./routes/task")
-//const userRouter = require("./routes/user")
+const tagRouter = require("./routes/tag")
 
-//app.use('/taskBoard', taskBoardRouter);
+app.use('/taskBoard', taskBoardRouter);
 app.use('/category', categoryRouter);
 //app.use('/task', taskRouter);
-//app.use('/user', userRouter);
+app.use('/tag', tagRouter);
 
 // Server is running --------------------------------
 const server = app.listen(port, () => {

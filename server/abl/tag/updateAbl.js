@@ -8,16 +8,18 @@ const categorySchema = {
     properties: {
         id: { type: "string"},
         title: {type: "string"},
+        color: {type: "string"},
         taskBoardId: {type: "string"},
     },
     required: ["id"],
     additionalProperties: false,
 };
 
+
 async function UpdateCategory(req, res){
     try{
         let category = req.body
-
+        
         const valid = ajv.validate(categorySchema, category)
         if(!valid){
             res.status(400).json({

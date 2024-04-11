@@ -1,9 +1,9 @@
 const Ajv = require('ajv')
 const ajv = new Ajv();
 
-const categoryDao = require("../../dao/category-dao.js");
+const taskBoardDao = require("../../dao/taskBoard-dao.js");
 
-const categorySchema = {
+const taskBoardSchema = {
     type: "object",
     properties: {
       id: { type: "string" },
@@ -12,23 +12,23 @@ const categorySchema = {
     additionalProperties: false,
 };
 
-async function DeleteCategory(req, res){
+async function DeletetaskBoard(req, res){
     try{
-        const reqCategory = req.body
+        const reqtaskBoard = req.body
 
-        const valid = ajv.validate(categorySchema, reqCategory);
+        const valid = ajv.validate(taskBoardSchema, reqtaskBoard);
         if (!valid){
             res.status(400).json({
-                reqCategory: "dtoIn is not valid",
+                reqtaskBoard: "dtoIn is not valid",
             });
             return;
         }
 
-        categoryDao.remove(reqCategory.id);
+        taskBoardDao.remove(reqtaskBoard.id);
         res.json({});
     } catch(e){
         res.status(500).json({message: e.message})
     }
 }
 
-module.exports = DeleteCategory;
+module.exports = DeletetaskBoard;

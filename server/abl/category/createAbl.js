@@ -12,17 +12,10 @@ const categorySchema = {
     additionalProperties: false,
 };
 
-/* const testData = {
-        title: "CrazyTest",
-        taskBoardId: "123456",
-}; */
-
 async function CreateCategory(req, res){
     try {
         let newCategory = req.body;
-        //let newCategory = testData;
 
-        // input validation
         const valid = ajv.validate(categorySchema, newCategory);
         if (!valid) {
           res.status(400).json({
@@ -34,7 +27,7 @@ async function CreateCategory(req, res){
         newCategory = categoryDao.create(newCategory);
         res.json(newCategory);
     }   catch (e){
-        res.status(500).json({ newCategory: e.newCategory});
+        res.status(500).json({ message: e.message});
     }
 }
 
