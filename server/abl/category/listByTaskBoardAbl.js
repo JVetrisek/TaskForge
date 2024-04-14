@@ -10,7 +10,7 @@ async function listByTaskBoard(req, res){
         if (!taskBoardValidation){
             res.status(404).json({
                 code: "taskBoardNotFound",
-                message: `TaskBoard ${req.taskBoardId} not found`
+                message: `TaskBoard ${reqParam.taskBoardId} not found`
               });
               return;
         }
