@@ -14,17 +14,19 @@ const taskBoardSchema = {
 
 async function DeletetaskBoard(req, res){
     try{
-        const reqtaskBoard = req.body
+        const reqTaskBoard =  req.query?.id ? req.query : req.body;
 
-        const valid = ajv.validate(taskBoardSchema, reqtaskBoard);
+        const valid = ajv.validate(taskBoardSchema, reqTaskBoard);
         if (!valid){
             res.status(400).json({
-                reqtaskBoard: "dtoIn is not valid",
+                code: "dtoInIsNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error,
             });
             return;
         }
 
-        taskBoardDao.remove(reqtaskBoard.id);
+        taskBoardDao.remove(reqTaskBoard.id);
         res.json({});
     } catch(e){
         res.status(500).json({message: e.message})

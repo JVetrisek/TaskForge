@@ -68,10 +68,33 @@ function list(){
     }
 }
 
+// Method for listing categories by taskBoard
+function listByTaskBoard(taskBoardId){
+    try{
+        const files = fs.readdirSync(FolderPath);
+
+        const taskBoardCategoryList = [];
+
+        for (const file of files) {
+            const fileData = fs.readFileSync(path.join(FolderPath, file), "utf8");
+            const category = JSON.parse(fileData);
+
+            if (category.taskBoardId === taskBoardId) {
+              taskBoardCategoryList.push(category);
+            }
+          }
+
+        return taskBoardCategoryList;
+    }catch (error) {
+        throw { code: "filterFailed", message: error.message };
+    }
+};
+
 module.exports = {
     create,
     remove,
     get,
     update,
     list,
+    listByTaskBoard,
 };

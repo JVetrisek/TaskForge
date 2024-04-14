@@ -14,12 +14,14 @@ const categorySchema = {
 
 async function DeleteCategory(req, res){
     try{
-        const reqCategory = req.body
+        const reqCategory = req.query?.id ? req.query : req.body;
 
         const valid = ajv.validate(categorySchema, reqCategory);
         if (!valid){
             res.status(400).json({
-                reqCategory: "dtoIn is not valid",
+                code: "dtoInIsNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error
             });
             return;
         }

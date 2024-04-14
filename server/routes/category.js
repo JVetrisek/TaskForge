@@ -6,6 +6,7 @@ const ListAbl = require("../abl/category/listAbl");
 const CreateAbl = require("../abl/category/createAbl");
 const UpdateAbl = require("../abl/category/updateAbl");
 const DeleteAbl = require("../abl/category/deleteAbl");
+const ListByTaskBoard = require('../abl/category/listByTaskBoardAbl');
 
 router.get("/get", (req, res) => {
   GetAbl(req, res);
@@ -26,5 +27,9 @@ router.post("/update", (req, res) => {
 router.post("/delete", (req, res) => {
   DeleteAbl(req, res);
 });
+
+router.get("/listByTaskBoard", (req, res) => {
+  ListByTaskBoard(req, res);
+})
 
 module.exports = router

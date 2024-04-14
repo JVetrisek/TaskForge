@@ -2,6 +2,7 @@ const Ajv = require("ajv");
 const ajv = new Ajv();
 
 const categoryDao = require("../../dao/category-dao.js");
+const taskBoardDao = require("../../dao/taskBoard-dao.js");
 
 const categorySchema = {
     type: "object",
@@ -9,25 +10,39 @@ const categorySchema = {
         title: {type: "string"},
         taskBoardId: {type: "string"},
     },
+    required: ["title","taskBoardId"],
     additionalProperties: false,
 };
 
 async function CreateCategory(req, res){
     try {
-        let newCategory = req.body;
+        let newCategory =  req.query?.id ? req.query : req.body
 
         const valid = ajv.validate(categorySchema, newCategory);
         if (!valid) {
           res.status(400).json({
-            newCategory: "dtoIn is not valid",
+            code: "dtoInIsNotValid",
+            message: "dtoIn is not valid",
+            validationError: ajv.error
           });
           return;
         }
 
+        // TaskBoard existence
+        const taskBoardValidation = taskBoardDao.get(newCategory.taskBoardId);
+        if (!taskBoardValidation){
+            res.status(404).json({
+                code: "dtioInTaskBoardIdNotExists",
+                message: `TaskBoard ${newCategory.taskBoardId} does not exists`,
+                validationError: ajv.error
+            });
+            return;
+        }
+
         newCategory = categoryDao.create(newCategory);
         res.json(newCategory);
-    }   catch (e){
-        res.status(500).json({ message: e.message});
+    }   catch (error){
+        res.status(500).json({ message: error.message});
     }
 }
 

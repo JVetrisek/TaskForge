@@ -1,9 +1,9 @@
-const categoryDao = require("../../dao/category-dao.js");
+const taskDao = require("../../dao/task-dao.js");
 
 async function ListAbl(req, res){
     try{
-        const categoryList = categoryDao.list();
-        res.json(categoryList);
+        const taskList = taskDao.list();
+        res.json(taskList);
     } catch (e){
         res.status(500).json({ message: e.message})
     }

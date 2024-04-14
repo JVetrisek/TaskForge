@@ -2,6 +2,9 @@ const Ajv = require('ajv')
 const ajv = new Ajv();
 
 const categoryDao = require("../../dao/category-dao.js");
+const taskBoardDao = require("../../dao/taskBoard-dao.js");
+
+// Dodělat: kontrola že user má přístup k taskboardu, kontrola, že taskboard existuje
 
 const categorySchema = {
     type: "object",
@@ -10,7 +13,7 @@ const categorySchema = {
         title: {type: "string"},
         taskBoardId: {type: "string"},
     },
-    required: ["id"],
+    required: ["id", "title", "taskBoardId"],
     additionalProperties: false,
 };
 
@@ -21,8 +24,19 @@ async function UpdateCategory(req, res){
         const valid = ajv.validate(categorySchema, category)
         if(!valid){
             res.status(400).json({
-                reqCategory: "dtoIn is not valid",
+                code: "dtoInIsNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error
             });
+            return;
+        }
+
+        const taskBoardValidity = taskBoardDao.get(category.taskBoardId);
+        if(!taskBoardValidity){
+            res.status(400).json({
+                code: "taskBoardNotFound",
+                message: `TaskBoard: ${category.taskBoardId} does not exists`
+            })
             return;
         }
 
@@ -30,11 +44,12 @@ async function UpdateCategory(req, res){
 
         if(!updatedCategory){
             res.status(404).json({
+                code: "categoryUpdateFail",
                 message: `Category ${category.id} not found`
             })
         }
 
-        res.json(UpdateCategory);
+        res.json(updatedCategory);
     } catch(error){
         res.status(500).json({message: e.message})
     }

@@ -1,9 +1,9 @@
 const Ajv = require('ajv')
 const ajv = new Ajv();
 
-const categoryDao = require("../../dao/category-dao.js");
+const tagDao = require("../../dao/tag-dao.js");
 
-const categorySchema = {
+const tagSchema = {
     type: "object",
     properties: {
         id: { type: "string"},
@@ -16,30 +16,32 @@ const categorySchema = {
 };
 
 
-async function UpdateCategory(req, res){
+async function UpdateTag(req, res){
     try{
-        let category = req.body
+        let tag = req.body
         
-        const valid = ajv.validate(categorySchema, category)
+        const valid = ajv.validate(tagSchema, tag)
         if(!valid){
             res.status(400).json({
-                reqCategory: "dtoIn is not valid",
+                code: "dtoInIsNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error
             });
             return;
         }
 
-        const updatedCategory = categoryDao.update(category)
+        const updatedTag = tagDao.update(tag)
 
-        if(!updatedCategory){
+        if(!updatedTag){
             res.status(404).json({
-                message: `Category ${category.id} not found`
+                message: `Tag ${tag.id} not found`
             })
         }
 
-        res.json(UpdateCategory);
+        res.json(updatedTag);
     } catch(error){
         res.status(500).json({message: e.message})
     }
 }
 
-module.exports = UpdateCategory;
+module.exports = UpdateTag;

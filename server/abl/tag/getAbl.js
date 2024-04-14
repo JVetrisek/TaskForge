@@ -1,9 +1,9 @@
 const Ajv = require('ajv')
 const ajv = new Ajv();
 
-const categoryDao = require("../../dao/category-dao.js");
+const tagDao = require("../../dao/tag-dao.js");
 
-const categorySchema = {
+const tagSchema = {
     type: "object",
     properties: {
       id: { type: "string" },
@@ -12,30 +12,32 @@ const categorySchema = {
     additionalProperties: false,
 };
 
-async function GetCategory (req, res){
+async function Gettag (req, res){
     try{
-        const reqCategory = req.id
+        const reqTag = req.query?.id ? req.query : req.body;
 
-        const valid = ajv.validate(categorySchema, reqCategory)
+        const valid = ajv.validate(tagSchema, reqTag)
         if (!valid){
             res.status(400).json({
-                reqCategory: "dtoIn is not valid",
+                code: "dtoInIsNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error
             });
             return;
         }
 
-        const category = categoryDao.get(reqCategory.id);
-        if (!category){
+        const tag = tagDao.get(reqTag.id);
+        if (!tag){
             res.status(404).json({
-                reqCategory: `Category ${reqCategory} not found`
+                reqTag: `tag ${reqTag} not found`
               });
               return;
         }
 
-        res.json(category)
+        res.json(tag)
     } catch(e){
         res.status(500).json({message: e.message});
     }
 }
 
-module.exports = GetCategory;
+module.exports = Gettag;

@@ -2,25 +2,25 @@ const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto');
 
-const FolderPath = path.join(__dirname, "storage", "categoryList");
+const FolderPath = path.join(__dirname, "storage", "tagList");
 
-// Method for creating category
-function create(category){
+// Method for creating tag
+function create(tag){
     try{
-        category.id = crypto.randomBytes(16).toString("hex");
-        const filePath = path.join(FolderPath, `${category.id}.json`);
-        const fileData = JSON.stringify(category);
+        tag.id = crypto.randomBytes(16).toString("hex");
+        const filePath = path.join(FolderPath, `${tag.id}.json`);
+        const fileData = JSON.stringify(tag);
         fs.writeFileSync(filePath, fileData, "utf8");
-        return category;
+        return tag;
     } catch (error){
         throw {code: "creatingFailed", message: error.message};
     }
 };
 
-// Method for removing category
-function remove(categoryId){
+// Method for removing tag
+function remove(tagId){
     try{
-        const filePath = path.join(FolderPath, `${categoryId}.json`);
+        const filePath = path.join(FolderPath, `${tagId}.json`);
         fs.unlinkSync(filePath);
         return {};
     } catch(error){
@@ -28,10 +28,10 @@ function remove(categoryId){
     }
 }
 
-// Method for getting category
-function get(categoryId){
+// Method for getting tag
+function get(tagId){
     try{
-        const filePath = path.join(FolderPath, `${categoryId}.json`)
+        const filePath = path.join(FolderPath, `${tagId}.json`)
         const fileData = fs.readFileSync(filePath, "utf8");
         return JSON.parse(fileData);
     } catch(error){
@@ -39,16 +39,16 @@ function get(categoryId){
     }
 }
 
-// Method for updating category
-function update(category){
+// Method for updating tag
+function update(tag){
     try {
-        const currentcategory = get(category.id);
-        if (!currentcategory) return null;
-        const newcategory = { ...currentcategory, ...category}
-        const filePath = path.join(FolderPath, `${category.id}.json`)
-        const fileData = JSON.stringify(newcategory);
+        const currenttag = get(tag.id);
+        if (!currenttag) return null;
+        const newtag = { ...currenttag, ...tag}
+        const filePath = path.join(FolderPath, `${tag.id}.json`)
+        const fileData = JSON.stringify(newtag);
         fs.writeFileSync(filePath, fileData, "utf8");
-        return newcategory;
+        return newtag;
     } catch(error){
         throw { error: "operation failed"}
     }
@@ -58,15 +58,36 @@ function update(category){
 function list(){
     try{
         const files = fs.readdirSync(FolderPath);
-        const categoryList = files.map((file) => {
+        const tagList = files.map((file) => {
             const fileData = fs.readFileSync(path.join(FolderPath, file), "utf8");
             return JSON.parse(fileData)
         })
-        return categoryList
+        return tagList
     } catch(error){
         throw { error: "operation failed"}
     }
 }
+
+function listByTaskBoard(taskBoardId){
+    try{
+        const files = fs.readdirSync(FolderPath);
+
+        const taskBoardCategoryList = [];
+
+        for (const file of files) {
+            const fileData = fs.readFileSync(path.join(FolderPath, file), "utf8");
+            const tag = JSON.parse(fileData);
+
+            if (tag.taskBoardId === taskBoardId) {
+              taskBoardCategoryList.push(tag);
+            }
+          }
+
+        return taskBoardCategoryList;
+    }catch (error) {
+        throw { code: "filterFailed", message: error.message };
+    }
+};
 
 module.exports = {
     create,
@@ -74,4 +95,5 @@ module.exports = {
     get,
     update,
     list,
+    listByTaskBoard
 };

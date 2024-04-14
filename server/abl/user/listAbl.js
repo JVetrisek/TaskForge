@@ -1,9 +1,10 @@
-const tagDao = require("../../dao/tag-dao.js");
+const userDao = require("../../dao/user-dao.js");
 
 async function ListAbl(req, res){
     try{
-        const tagList = tagDao.list();
-        res.json(tagList);
+        const userList = userDao.list();
+
+        res.json(userList);
     } catch (e){
         res.status(500).json({ message: e.message})
     }

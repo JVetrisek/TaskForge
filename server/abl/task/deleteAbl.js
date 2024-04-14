@@ -1,9 +1,9 @@
 const Ajv = require('ajv')
 const ajv = new Ajv();
 
-const categoryDao = require("../../dao/category-dao.js");
+const taskDao = require("../../dao/task-dao.js");
 
-const categorySchema = {
+const taskSchema = {
     type: "object",
     properties: {
       id: { type: "string" },
@@ -12,25 +12,34 @@ const categorySchema = {
     additionalProperties: false,
 };
 
-async function DeleteCategory(req, res){
+async function Deletetask(req, res){
     try{
-        const reqCategory = req.body
-        // Test
-        //const reqCategory = { id: "2d6df09934af1e1c5ca617ab1c70d1cb"};
+        const reqTask = req.query?.id ? req.query : req.body;
 
-        const valid = ajv.validate(categorySchema, reqCategory);
+        const valid = ajv.validate(taskSchema, reqTask);
         if (!valid){
             res.status(400).json({
-                reqCategory: "dtoIn is not valid",
+                code: "dtoInIsNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error,
             });
             return;
         }
 
-        categoryDao.remove(reqCategory.id);
+        const task = taskDao.get(reqTask.id);
+        if (!task){
+            res.status(404).json({
+                code: "taskNotFound",
+                message: `task ${reqTask} not found`
+              });
+              return;
+        }
+
+        taskDao.remove(reqTask.id);
         res.json({});
     } catch(e){
         res.status(500).json({message: e.message})
     }
 }
 
-module.exports = DeleteCategory;
+module.exports = Deletetask;

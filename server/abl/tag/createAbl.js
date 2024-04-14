@@ -2,6 +2,7 @@ const Ajv = require("ajv");
 const ajv = new Ajv();
 
 const tagDao = require("../../dao/tag-dao.js");
+const taskBoardDao = require("../../dao/taskBoard-dao.js");
 
 const tagSchema = {
     type: "object",
@@ -10,33 +11,40 @@ const tagSchema = {
         color: {type: "string"},
         taskBoardId: {type: "string"},
     },
+    required: ["title", "taskBoardId"],
     additionalProperties: false,
 };
 
-let testTag ={
-    title: "TestTest",
-    color: "#dfdf88",
-    taskBoardId: "55fd5f5df",
-}
-
-async function Createtag(req, res){
+async function CreateCategory(req, res){
     try {
-        //let newtag = req.body;
-        let newtag = testTag;
+        let newTag =  req.query?.id ? req.query : req.body
 
-        const valid = ajv.validate(tagSchema, newtag);
+        const valid = ajv.validate(tagSchema, newTag);
         if (!valid) {
           res.status(400).json({
-            newtag: "dtoIn is not valid",
+            code: "dtoInIsNotValid",
+            message: "dtoIn is not valid",
+            validationError: ajv.error
           });
           return;
         }
 
-        newtag = tagDao.create(newtag);
-        res.json(newtag);
-    }   catch (e){
-        res.status(500).json({ message: e.message});
+        // TaskBoard existence
+        const taskBoardValidation = taskBoardDao.get(newTag.taskBoardId);
+        if (!taskBoardValidation){
+            res.status(404).json({
+                code: "dtioInTaskBoardIdNotExists",
+                message: `TaskBoard ${newTag.taskBoardId} does not exists`,
+                validationError: ajv.error
+            });
+            return;
+        }
+
+        newTag = tagDao.create(newTag);
+        res.json(newTag);
+    }   catch (error){
+        res.status(500).json({ message: error.message});
     }
 }
 
-module.exports = Createtag;
+module.exports = CreateCategory;

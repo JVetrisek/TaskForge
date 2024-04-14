@@ -12,14 +12,18 @@ const categorySchema = {
     additionalProperties: false,
 };
 
+// Dodělat: kontrola že user má přístup k taskboardu
+
 async function GetCategory (req, res){
     try{
-        const reqCategory = req.id
+        const reqCategory = req.query?.id ? req.query : req.body;
 
         const valid = ajv.validate(categorySchema, reqCategory)
         if (!valid){
             res.status(400).json({
-                reqCategory: "dtoIn is not valid",
+                code: "dtoInIsNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error
             });
             return;
         }
@@ -27,7 +31,8 @@ async function GetCategory (req, res){
         const category = categoryDao.get(reqCategory.id);
         if (!category){
             res.status(404).json({
-                reqCategory: `Category ${reqCategory} not found`
+                code: "categoryNotFound",
+                message: `Category ${reqCategory} not found`
               });
               return;
         }

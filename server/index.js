@@ -15,13 +15,16 @@ const port = 8080;
 // Router---------------------------------------------
 const taskBoardRouter = require("./routes/taskBoard");
 const categoryRouter = require("./routes/category");
-//const taskRouter = require("./routes/task")
-const tagRouter = require("./routes/tag")
+const taskRouter = require("./routes/task");
+const tagRouter = require("./routes/tag");
+const userRouter = require("./routes/user");
 
 app.use('/taskBoard', taskBoardRouter);
 app.use('/category', categoryRouter);
-//app.use('/task', taskRouter);
+app.use('/task', taskRouter);
 app.use('/tag', tagRouter);
+app.use('/user', userRouter);
+
 
 // Server is running --------------------------------
 const server = app.listen(port, () => {

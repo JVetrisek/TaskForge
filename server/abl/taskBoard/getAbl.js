@@ -14,12 +14,14 @@ const taskBoardSchema = {
 
 async function GetTaskBoard (req, res){
     try{
-        const reqTaskBoard = req.id;
+        const reqTaskBoard = req.query?.id ? req.query : req.body;
 
         const valid = ajv.validate(taskBoardSchema, reqTaskBoard)
         if (!valid){
             res.status(400).json({
-                reqTaskBoard: "dtoIn is not valid",
+                code: "dtoInIsNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error,
             });
             return;
         }
@@ -27,7 +29,8 @@ async function GetTaskBoard (req, res){
         const taskBoard = taskBoardDao.get(reqTaskBoard.id);
         if (!taskBoard){
             res.status(404).json({
-                reqTaskBoard: `taskBoard ${reqTaskBoard} not found`
+                code: "taskBoardNotFound",
+                message: `taskBoard ${reqTaskBoard} not found`
               });
               return;
         }

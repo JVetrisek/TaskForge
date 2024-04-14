@@ -1,9 +1,9 @@
 const Ajv = require('ajv')
 const ajv = new Ajv();
 
-const taskDao = require("../../dao/task-dao.js");
+const userDao = require("../../dao/user-dao.js");
 
-const taskSchema = {
+const userSchema = {
     type: "object",
     properties: {
       id: { type: "string" },
@@ -12,33 +12,35 @@ const taskSchema = {
     additionalProperties: false,
 };
 
-async function Gettask (req, res){
-    try{
-        const reqTask = req.query?.id ? req.query : req.body;
 
-        const valid = ajv.validate(taskSchema, reqTask)
+async function GetUser (req, res){
+    try{
+        const reqUser = req.query?.id ? req.query : req.body;
+
+        // input validation
+        const valid = ajv.validate(userSchema, reqUser)
         if (!valid){
             res.status(400).json({
                 code: "dtoInIsNotValid",
                 message: "dtoIn is not valid",
-                validationError: ajv.error
+                validationError: ajv.errors,
             });
             return;
         }
 
-        const task = taskDao.get(reqTask.id);
-        if (!task){
+        // get user by id
+        const user = userDao.get(reqUser.id);
+        if (!user){
             res.status(404).json({
-                code: "taskNotFound",
-                message: `task ${reqTask} not found`
+                reqUser: `user ${reqUser} not found`
               });
               return;
         }
 
-        res.json(task)
+        res.json(user)
     } catch(e){
         res.status(500).json({message: e.message});
     }
 }
 
-module.exports = Gettask;
+module.exports = GetUser;

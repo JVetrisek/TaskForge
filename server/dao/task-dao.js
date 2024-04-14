@@ -54,7 +54,7 @@ function update(task){
     }
 }
 
-// Method for listing categories
+// Method for listing tasks
 function list(){
     try{
         const files = fs.readdirSync(FolderPath);
@@ -68,10 +68,33 @@ function list(){
     }
 }
 
+// Task filter (by category)
+function listByCategory(categoryId){
+    try{
+        const files = fs.readdirSync(FolderPath);
+
+        const categoryTaskList = [];
+
+        for (const file of files) {
+            const fileData = fs.readFileSync(path.join(FolderPath, file), "utf8");
+            const task = JSON.parse(fileData);
+
+            if (task.categoryId === categoryId) {
+                categoryTaskList.push(task);
+            }
+          }
+
+        return categoryTaskList;
+    }catch (error) {
+        throw { code: "filterFailed", message: error.message };
+    }
+};
+
 module.exports = {
     create,
     remove,
     get,
     update,
     list,
+    listByCategory,
 };

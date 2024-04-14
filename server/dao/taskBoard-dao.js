@@ -20,7 +20,7 @@ function create(newTaskBoard){
 // get method
 function get(taskBoardId){
     try{
-        const filePath = path.join(file, `${taskBoardId}.json`);
+        const filePath = path.join(FolderPath, `${taskBoardId}.json`);
         const file = fs.readFileSync(filePath, "utf8");
         return JSON.parse(file)
     } catch(error){
@@ -33,7 +33,7 @@ function get(taskBoardId){
 // remove method
 function remove(taskBoardId){
     try{
-        const filePath = path.join(file, `${taskBoardId}.json`);
+        const filePath = path.join(FolderPath, `${taskBoardId}.json`);
         fs.unlinkSync(filePath);
         return {};
     } catch(error){

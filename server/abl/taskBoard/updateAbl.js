@@ -8,7 +8,7 @@ const taskBoardSchema = {
     properties: {
         id: { type: "string"},
         title: {type: "string"},
-        associatedUsersIdList: {type: []},
+        associatedUserIdList: {type: "array"},
         ownerId: {type: "string"},
     },
     required: ["id"],
@@ -17,12 +17,14 @@ const taskBoardSchema = {
 
 async function UpdateTaskBoard(req, res){
     try{
-        let taskBoard = req.body
+        let taskBoard = req.body;
 
         const valid = ajv.validate(taskBoardSchema, taskBoard)
         if(!valid){
             res.status(400).json({
-                reqtaskBoard: "dtoIn is not valid",
+                code: "dtoInisNotValid",
+                message: "dtoIn is not valid",
+                validationError: ajv.error,
             });
             return;
         }
@@ -31,13 +33,14 @@ async function UpdateTaskBoard(req, res){
 
         if(!updatedTaskBoard){
             res.status(404).json({
+                code: "operationFailed",
                 message: `taskBoard ${taskBoard.id} not found`
             })
         }
 
-        res.json(UpdatetaskBoard);
+        res.json(updatedTaskBoard);
     } catch(error){
-        res.status(500).json({message: e.message})
+        res.status(500).json({message: error.message})
     }
 }
 
