@@ -1,0 +1,45 @@
+.listHeader{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px #424247 solid;
+    align-items: center;
+    margin-top: 3rem;
+    padding-bottom: 0.5rem;
+}
+.listTitle{
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+.filterButtonList{
+    display: flex;
+    gap: 1rem;
+}
+.filterButton{
+    background: none;
+    border: none;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: white;
+}
+.taskBoardList{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.addTaskBoardButton{
+    background-color: #252529;
+    border-radius: 20px;
+    padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+    width: fit-content;
+    height: fit-content;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+    color: rgb(170, 170, 170);
+}
+.addTaskBoardButton:hover{
+    box-shadow: 0 0 20px rgba(9, 117, 241, 0.8);
+    color: #2eadff;
+    border-color: #2eadff;
+    cursor: pointer;
+}

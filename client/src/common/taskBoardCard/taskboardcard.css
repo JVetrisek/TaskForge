@@ -1,0 +1,35 @@
+.card {
+    background-color: #252529;
+    border-radius: 20px;
+    min-height: 8rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    color: rgb(170, 170, 170);
+    border: 2px solid #272729;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card > h4{
+    margin: 0;
+    padding: 0.5rem 5rem 0.5rem 1rem;
+    background-color: #424247;
+    border-radius: 20px;
+    height: fit-content;
+}
+.card:hover{
+    box-shadow: 0 0 20px rgba(9, 117, 241, 0.8);
+    color: #2eadff;
+    border-color: #2eadff;
+    cursor: pointer;
+}
+.buttonContainer {
+    display: flex;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    align-items: flex-end;
+    color: #424247;
+    z-index: 1;
+}

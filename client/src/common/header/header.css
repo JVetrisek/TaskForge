@@ -1,0 +1,16 @@
+header > button{
+    color: rgb(54, 54, 54);
+    background: none;
+    border: none;
+    height: 2rem;
+    font-weight: bold;
+    font-size: x-large;
+}
+header{
+    background-color: #252529 ;
+    width: 100%;
+    padding: 1rem 5%;
+}
+.logo{
+    color: white;
+}
