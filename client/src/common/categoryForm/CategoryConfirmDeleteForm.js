@@ -19,9 +19,8 @@ function CategoryConfirmDeleteForm({ setShowConfirmDeleteDialog, category }) {
       <Modal className="modal" show={true} onHide={() => confirmDeleteClose()}>
         <form className="form">
           <h2>Delete category</h2>
-          <p>
-            Are you sure you want to delete {category.title}?
-          </p>
+          <p className="formText">Are you sure you want to delete {category.title}?</p>
+          <p className="warning">Deleting a category deletes all the tasks in it!</p>
             <button
                 className="formButton"
                 onClick={() => confirmDeleteClose()}
@@ -45,7 +44,7 @@ function CategoryConfirmDeleteForm({ setShowConfirmDeleteDialog, category }) {
                 }}
             >
                 Delete Task
-            </button>;
+            </button>
         </form>
       </Modal>
     );

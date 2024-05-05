@@ -28,7 +28,7 @@ function TaskForm({ setShowTaskForm, categoryId, taskBoardId, task = {}}){
                     delete formData.completionDate;
                 } else {
                     console.log(formData.completionDate)
-                    formData.date = new Date(formData.date).toISOString();
+                    /* formData.date = new Date(formData.date).toISOString(); */
                 }
                 
 
@@ -50,7 +50,7 @@ function TaskForm({ setShowTaskForm, categoryId, taskBoardId, task = {}}){
             }}
             >
                 <h2>{`${
-                        task.id ? "Update" : "Create"
+                        task.title ? "Update" : "Create"
                     } task`}
                 </h2>
                 <div>

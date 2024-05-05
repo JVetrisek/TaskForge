@@ -48,7 +48,7 @@ function CategoryListProvider({ children }) {
 
     async function handleLoad(){
       const searchParams = new URLSearchParams(location.search);
-      const id = searchParams.get("id");
+      const id = searchParams.get("id");+
       console.log(id)
       setEventLoadObject((current) => ({ ...current, state: "loading" }));
       fetch(`http://localhost:8080/category/listByTaskBoard?taskBoardId=${id}`, {

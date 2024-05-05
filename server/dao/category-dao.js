@@ -22,6 +22,9 @@ function remove(categoryId){
     try{
         const filePath = path.join(FolderPath, `${categoryId}.json`);
         fs.unlinkSync(filePath);
+
+        
+
         return {};
     } catch(error){
         throw { error: "operation failed"}

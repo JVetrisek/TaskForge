@@ -2,6 +2,7 @@ const Ajv = require('ajv')
 const ajv = new Ajv();
 
 const categoryDao = require("../../dao/category-dao.js");
+const taskDao = require("../../dao/task-dao.js");
 
 const categorySchema = {
     type: "object",
@@ -25,6 +26,12 @@ async function DeleteCategory(req, res){
             });
             return;
         }
+
+        const categoryTasks = taskDao.listByCategory(reqCategory.id)
+
+        categoryTasks.forEach(element => {
+            taskDao.remove(element.id)
+        });
 
         categoryDao.remove(reqCategory.id);
         res.json({});

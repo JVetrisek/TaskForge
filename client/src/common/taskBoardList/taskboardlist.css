@@ -12,7 +12,7 @@
     color: white;
 }
 .filterButtonList{
-    display: flex;
+    display: none;
     gap: 1rem;
 }
 .filterButton{
@@ -42,4 +42,14 @@
     color: #2eadff;
     border-color: #2eadff;
     cursor: pointer;
+}
+@media only screen and (max-width: 900px) {
+    .taskBoardList{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media only screen and (max-width: 600px) {
+    .taskBoardList{
+        grid-template-columns: 1fr;
+    }
 }

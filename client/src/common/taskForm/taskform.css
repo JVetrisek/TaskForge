@@ -91,7 +91,13 @@
     cursor: pointer;
 }
 
-.form p{
+.warning{
+    color: rgb(196, 33, 33);
+    text-align: center;
+    margin-top: -0.5rem;
+}
+
+.formText{
     color: #99999d;
     text-align: center;
 }

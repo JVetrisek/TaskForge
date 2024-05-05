@@ -2,6 +2,8 @@ const Ajv = require('ajv')
 const ajv = new Ajv();
 
 const taskBoardDao = require("../../dao/taskBoard-dao.js");
+const categoryDao = require("../../dao/category-dao.js");
+const taskDao = require("../../dao/task-dao.js");
 
 const taskBoardSchema = {
     type: "object",
@@ -25,6 +27,15 @@ async function DeletetaskBoard(req, res){
             });
             return;
         }
+
+        const taskBoardCategories = categoryDao.listByTaskBoard(reqTaskBoard.id)
+        taskBoardCategories.forEach(category=>{
+            const categoryTasks = taskDao.listByCategory(category.id)
+            categoryTasks.forEach(element => {
+                taskDao.remove(element.id)
+            });
+            categoryDao.remove(category.id)
+        })
 
         taskBoardDao.remove(reqTaskBoard.id);
         res.json({});

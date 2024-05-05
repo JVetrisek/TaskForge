@@ -15,7 +15,7 @@ function ConfirmDeleteDialog({ setDeleteForm, task }) {
       <Modal className="modal" show={true} onHide={() => setDeleteForm(false)}>
         <form className="form">
           <h2>Delete Task</h2>
-          <p>Are you sure you want to delete {task.id}?</p>
+          <p className="formText">Are you sure you want to delete {task.id}?</p>
             <button
                 className="formButton"
                 onClick={() => setDeleteForm(false)}
